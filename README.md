@@ -12,3 +12,13 @@ Run the following command to install this package using composer dep management 
 ```bash
     composer require kkiapay/kkiapay-php
 ```
+
+
+## Usage
+
+#### Verify transaction status using thier Id
+```php
+    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret);
+
+    $kkiapay->verifyTransaction($transaction_id);
+```
