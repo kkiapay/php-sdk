@@ -1,0 +1,18 @@
+{
+    "name": "kkiapay/kkiapay-php",
+    "description": "Php sdk for kkiapay payment gateway",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "license": "MIT",
+    "authors": [{
+        "name": "KKIAPAY",
+        "email": "support.dev@kkiapay.me"
+    }],
+    "autoload": {
+        "psr-4": {
+            "Kkiapay\\": "src/"
+        }
+    }
+}
