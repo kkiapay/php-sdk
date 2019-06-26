@@ -47,29 +47,20 @@ class Kkiapay{
     public function verifyTransaction($transactionId){
         $response = null;
       try{
-          if ($this->sandbox) {
-            $response = $this->curl->post(Constants::SANDBOX_URL. '/api/v1/transactions/status', array(
-                "json" => array("transactionId" => $transactionId),
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'X-API-KEY' => $this->public_key,
-                    'X-PRIVATE-KEY' => $this->private_key,
-                    'X-SECRET-KEY' => $this->secret
-                ]
-            ));
-          } else {
-            $response = $this->curl->post(Constants::BASE_URL. '/api/v1/transactions/status', array(
-                "json" => array("transactionId" => $transactionId),
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'X-API-KEY' => $this->public_key,
-                    'X-PRIVATE-KEY' => $this->private_key,
-                    'X-SECRET-KEY' => $this->secret
-                ]
-            ));
-          }
+        
+        $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
 
-          $response = $response->getBody();
+        $response = $this->curl->post($const. '/api/v1/transactions/status', array(
+            "json" => array("transactionId" => $transactionId),
+            'headers' => [
+                'Accept' => 'application/json',
+                'X-API-KEY' => $this->public_key,
+                'X-PRIVATE-KEY' => $this->private_key,
+                'X-SECRET-KEY' => $this->secret
+            ]
+        ));
+
+        $response = $response->getBody();
       }catch (\Exception $e){
 
         $response = json_encode(array( "status" => STATUS::TRANSACTION_NOT_FOUND));
