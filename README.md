@@ -26,7 +26,7 @@ Using composer:
 ## Request to retrieve transactions 
 
 #### EXAMPLE
-
+```php
     $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox=false);
     $kkiapay->verifyTransaction($transaction_id);
 ```
@@ -36,7 +36,7 @@ Using composer:
 #### EXAMPLE
 
 ```php
-    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret);
+    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox=false);
     $kkiapay->refundTransaction($transaction_id);
 ```
 
