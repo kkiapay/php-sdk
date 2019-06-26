@@ -24,14 +24,17 @@ class Kkiapay{
 
     private $curl;
 
+    private $sandbox;
+
     /**
      * Kkiapay constructor.
      */
-    public function __construct($public_key, $private_key, $secret = null)
+    public function __construct($public_key, $private_key, $secret = null, $sandbox = false)
     {
         $this->private_key = $private_key;
         $this->public_key = $public_key;
         $this->secret = $secret;
+        $this->sandbox = $sandbox;
         $this->curl = new \GuzzleHttp\Client();
     }
 
@@ -44,18 +47,28 @@ class Kkiapay{
     public function verifyTransaction($transactionId){
         $response = null;
       try{
-          $response = $this->curl->post(Constants::BASE_URL. '/api/v1/transactions/status', array(
-              "json" => array("transactionId" => $transactionId),
-              'headers' => [
-                  'Accept'     => 'application/json',
-                  'X-API-KEY'      => $this->private_key
-              ]
-          ));
+          if ($this->sandbox) {
+            $response = $this->curl->post(Constants::SANDBOX_URL. '/api/v1/transactions/status', array(
+                "json" => array("transactionId" => $transactionId),
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-API-KEY' => $this->private_key
+                ]
+            ));
+          } else {
+            $response = $this->curl->post(Constants::BASE_URL. '/api/v1/transactions/status', array(
+                "json" => array("transactionId" => $transactionId),
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-API-KEY' => $this->private_key
+                ]
+            ));
+          }
 
           $response = $response->getBody();
       }catch (\Exception $e){
 
-         $response = json_encode(array( "status" => STATUS::TRANSACTION_NOT_FOUND));
+        $response = json_encode(array( "status" => STATUS::TRANSACTION_NOT_FOUND));
       }
     return json_decode((string)$response);
     }
