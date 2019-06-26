@@ -27,8 +27,7 @@ Using composer:
 
 #### EXAMPLE
 
-```php
-    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret);
+    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox=false);
     $kkiapay->verifyTransaction($transaction_id);
 ```
 
