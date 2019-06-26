@@ -55,7 +55,9 @@ class Kkiapay{
                 "json" => array("transactionId" => $transactionId),
                 'headers' => [
                     'Accept' => 'application/json',
-                    'X-API-KEY' => $this->private_key
+                    'X-API-KEY' => $this->public_key,
+                    'X-PRIVATE-KEY' => $this->private_key,
+                    'X-SECRET-KEY' => $this->secret
                 ]
             ));
           } else {
@@ -63,7 +65,9 @@ class Kkiapay{
                 "json" => array("transactionId" => $transactionId),
                 'headers' => [
                     'Accept' => 'application/json',
-                    'X-API-KEY' => $this->private_key
+                    'X-API-KEY' => $this->public_key,
+                    'X-PRIVATE-KEY' => $this->private_key,
+                    'X-SECRET-KEY' => $this->secret
                 ]
             ));
           }
