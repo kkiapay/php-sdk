@@ -27,7 +27,7 @@ class Kkiapay{
     /**
      * Kkiapay constructor.
      */
-    public function __construct($public_key, $private_key, $secret = null)
+    public function __construct($public_key, $private_key, $secret = null, $sandbox = false)
     {
         $this->private_key = $private_key;
         $this->public_key = $public_key;
@@ -44,13 +44,23 @@ class Kkiapay{
     public function verifyTransaction($transactionId){
         $response = null;
       try{
-          $response = $this->curl->post(Constants::BASE_URL. '/api/v1/transactions/status', array(
-              "json" => array("transactionId" => $transactionId),
-              'headers' => [
-                  'Accept'     => 'application/json',
-                  'X-API-KEY'      => $this->private_key
-              ]
-          ));
+          if ($sandbox) {
+            $response = $this->curl->post(Constants::SANDBOX_URL. '/api/v1/transactions/status', array(
+                "json" => array("transactionId" => $transactionId),
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-API-KEY' => $this->private_key
+                ]
+            ));
+          } else {
+            $response = $this->curl->post(Constants::BASE_URL. '/api/v1/transactions/status', array(
+                "json" => array("transactionId" => $transactionId),
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-API-KEY' => $this->private_key
+                ]
+            ));
+          }
 
           $response = $response->getBody();
       }catch (\Exception $e){
