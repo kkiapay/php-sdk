@@ -1,5 +1,8 @@
 <?php namespace Kkiapay;
 
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
+use function GuzzleHttp\json_encode;
 /**
  * Created by PhpStorm.
  * User: shadai.ali
@@ -72,6 +75,43 @@ class Kkiapay{
       }
     return json_decode((string)$response);
     }
+
+
+    public function refundTransaction($transactionId){
+        $reponse = null;
+      try{
+          $response = $this->curl->post(Constants::BASE_URL. '/api/v1/transactions/revert', array(
+              "json" => array("transactionId" => $transactionId),
+              'headers' => [
+                  'Accept'     => 'application/json',
+                  'X-API-KEY'      => $this->public_key
+              ]
+          ));
+
+            $reponse = $response->getBody();
+            return json_decode((string)$reponse);
+
+        }catch (RequestException $e){
+            if ($e->hasResponse()) {
+                $reponse = "{".$this->get_string_between(Psr7\str($e->getResponse()), "{","}")."}";
+
+                return json_decode((string)$reponse);
+            }
+            $reponse = json_encode(array( "status" => STATUS::FAILED));
+            return json_decode((string)$response);
+        }
+    }
+
+    
+    function get_string_between($string, $start, $end){
+        $string = ' ' . $string;
+        $ini = strpos($string, $start);
+        if ($ini == 0) return '';
+        $ini += strlen($start);
+        $len = strpos($string, $end, $ini) - $ini;
+        return substr($string, $ini, $len);
+    }
+
     /**
      * @return mixed
      */
