@@ -61,12 +61,12 @@ Using composer:
 
 | PARAMETERS      | DESCRIPTION             |
 | ----------- | ----------------------- |
-|  $algorithm    | (String)   "roof" if the amount reaches a ceiling or "rate" for refund by frequency. |
-| $send_nofitication      | (Boolean) to receive a notification after payment.                   |
-| $destination_type    | (String) "BANK_ACCOUNT" or "MOBILE_MONEY"              |
-| $destination |  (String) the bank number or phone number of the receiver of the refund |
-| $rate_frequency | (String) "1m", "1w", "3j" Refund frequency when choosing "rate" algorithm  |
-| $roof_amount | (String) Refund amount when choosing "roof" algorithm  |
+| algorithm    | (String)   "roof" if the amount reaches a ceiling or "rate" for refund by frequency. |
+| send_nofitication      | (Boolean) to receive a notification after payment.                   |
+| destination_type    | (String) "BANK_ACCOUNT" or "MOBILE_MONEY"              |
+| destination |  (String) the bank number or phone number of the receiver of the refund |
+| rate_frequency | (String) "1m", "1w", "3j" Refund frequency when choosing "rate" algorithm  |
+| roof_amount | (String) Refund amount when choosing "roof" algorithm  |
 
 ## COMPLETE  POSSIBLE STATUS LIST
 
