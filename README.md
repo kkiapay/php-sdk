@@ -21,13 +21,23 @@ Using composer:
 
 ```
 
+## Initialization
+
+#### Production
+```php
+    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret);
+```
+
+#### Sandbox
+```php
+    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox = false);
+```
   
 
 ## Request to retrieve transactions 
 
 #### EXAMPLE
 ```php
-    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox=false);
     $kkiapay->verifyTransaction($transaction_id);
 ```
 
@@ -36,7 +46,6 @@ Using composer:
 #### EXAMPLE
 
 ```php
-    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox=false);
     $kkiapay->refundTransaction($transaction_id);
 ```
 
@@ -45,8 +54,6 @@ Using composer:
 #### EXAMPLE
 
 ```php
-    
-    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox = true);
     
     // Example to schedule payout when amount reaches a ceiling
     $kkiapay->setupPayout(array( "algorithm" => "roof", "send_notification" => true, 
@@ -79,3 +86,4 @@ Using composer:
 | TRANSACTION_NOT_FOUND |  Transaction not found |
 | INVALID_TRANSACTION | You are not owner of this transaction  |
 | INVALID_TRANSACTION_TYPE | We can't revert this transaction  |
+| INVALID_PAYOUT_DESTINATION_ACCOUNT | Provided destination account is not valid mobile money account |
