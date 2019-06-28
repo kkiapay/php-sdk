@@ -68,7 +68,6 @@ Using composer:
 | $rate_frequency | (String) "1m", "1w", "3j" Refund frequency when choosing "rate" algorithm  |
 | $roof_amount | (String) Refund amount when choosing "roof" algorithm  |
 
-
 ## COMPLETE  POSSIBLE STATUS LIST
 
 | STATUS      | DESCRIPTION             |

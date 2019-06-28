@@ -79,6 +79,7 @@ class Kkiapay{
         $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
 
           $response = $this->curl->post($const. '/api/v1/transactions/revert', array(
+            
               "json" => array("transactionId" => $transactionId),
               'headers' => [
                   'Accept'     => 'application/json',
@@ -99,6 +100,7 @@ class Kkiapay{
             return json_decode((string)$response);
         }
     }
+
 
     public function setupPayout(array $options){
         $reponse = null;
