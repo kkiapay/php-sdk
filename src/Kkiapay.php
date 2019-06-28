@@ -100,14 +100,14 @@ class Kkiapay{
         }
     }
 
-    public function setupPayout($algorithm,$send_notification,$destination_type,$roof_amount,$destination,$rate_frequency){
+    public function setupPayout(array $options){
         $reponse = null;
       try{
 
           $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
 
-          $response = $this->curl->post($const. '/api/v1/merchant/payouts/setup-payout', array(
-              "json" => array( "algorithm" => $algorithm, "send_notification" => $send_notification, "destination_type" => $destination_type, "roof_amount" => $roof_amount, "destination" => $destination, "rate_frequency" => $rate_frequency),
+          $response = $this->curl->post($const. '/merchant/payouts/schedule', array(
+              "json" => $options,
               'headers' => [
                   'Accept'     => 'application/json',
                   'X-API-KEY'      => $this->public_key,
@@ -121,8 +121,7 @@ class Kkiapay{
 
         }catch (RequestException $e){
             if ($e->hasResponse()) {
-                //$reponse = "{".$this->get_string_between(Psr7\str($e->getResponse()), "{","}")."}";
-                $reponse = Psr7\str($e->getResponse());
+                $reponse = "{".$this->get_string_between(Psr7\str($e->getResponse()), "{","}")."}";
                 return json_decode((string)$reponse);
             }
             $reponse = json_encode(array( "status" => STATUS::FAILED));

@@ -45,19 +45,28 @@ Using composer:
 #### EXAMPLE
 
 ```php
-    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox=false);
-    $kkiapay->refundTransaction($algorithm, $send_notification, 
-        $destination_type, $roof_amount, $destination,$rate_frequency);
+    
+    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox = true);
+    
+    // Example to schedule payout when amount reaches a ceiling
+    $kkiapay->setupPayout(array( "algorithm" => "roof", "send_notification" => true, 
+        "destination_type" => "MOBILE_MONEY", "roof_amount" => "1000", 
+        "destination" => "22997000000" ));
+        
+        // Example to schedule payout by frequency
+    $kkiapay->setupPayout(array( "algorithm" => "rate", "send_notification" => true, 
+        "destination_type" => "MOBILE_MONEY", "rate_frequency" => "1m", 
+        "destination" => "22997000000" ));
 ```
 
 | PARAMETERS      | DESCRIPTION             |
 | ----------- | ----------------------- |
-|  $algorithm    | (String)   "roof" or ""                 |
-| $send_nofitication      | (Boolean)                    |
+|  $algorithm    | (String)   "roof" if the amount reaches a ceiling or "rate" for refund by frequency. |
+| $send_nofitication      | (Boolean) to receive a notification after payment.                   |
 | $destination_type    | (String) "BANK_ACCOUNT" or "MOBILE_MONEY"              |
-| $roof_amount | (String)                     |
-| $destination |  (String)  |
-| $rate_frequency | (String) "1m", "1w", "3j"  |
+| $destination |  (String) the bank number or phone number of the receiver of the refund |
+| $rate_frequency | (String) "1m", "1w", "3j" Refund frequency when choosing "rate" algorithm  |
+| $roof_amount | (String) Refund amount when choosing "roof" algorithm  |
 
 
 ## COMPLETE  POSSIBLE STATUS LIST
