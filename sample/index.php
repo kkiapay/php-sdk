@@ -8,7 +8,7 @@ $public_key = "xxxxxxxxxxxxxxxxxxxxxxxxxx";
 $private_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxx";
 $secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
-$kkiapay = new Kkiapay($public_key, $private_key, $secret, $sandbox=true);
+$kkiapay = new Kkiapay($public_key, $private_key, $secret);
 
 //$verify = $kkiapay->verifyTransaction("oldnbsc");
 
