@@ -75,7 +75,11 @@ class Kkiapay{
     public function refundTransaction($transactionId){
         $reponse = null;
       try{
-          $response = $this->curl->post(Constants::BASE_URL. '/api/v1/transactions/revert', array(
+
+        $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
+
+          $response = $this->curl->post($const. '/api/v1/transactions/revert', array(
+            
               "json" => array("transactionId" => $transactionId),
               'headers' => [
                   'Accept'     => 'application/json',
@@ -90,6 +94,36 @@ class Kkiapay{
             if ($e->hasResponse()) {
                 $reponse = "{".$this->get_string_between(Psr7\str($e->getResponse()), "{","}")."}";
 
+                return json_decode((string)$reponse);
+            }
+            $reponse = json_encode(array( "status" => STATUS::FAILED));
+            return json_decode((string)$response);
+        }
+    }
+
+
+    public function setupPayout(array $options){
+        $reponse = null;
+      try{
+
+          $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
+
+          $response = $this->curl->post($const. '/merchant/payouts/schedule', array(
+              "json" => $options,
+              'headers' => [
+                  'Accept'     => 'application/json',
+                  'X-API-KEY'      => $this->public_key,
+                  'X-PRIVATE-API-KEY'      => $this->private_key,
+                  'X-SECRET-API-KEY'      => $this->secret,
+              ]
+          ));
+
+            $reponse = $response->getBody();
+            return json_decode((string)$reponse);
+
+        }catch (RequestException $e){
+            if ($e->hasResponse()) {
+                $reponse = "{".$this->get_string_between(Psr7\str($e->getResponse()), "{","}")."}";
                 return json_decode((string)$reponse);
             }
             $reponse = json_encode(array( "status" => STATUS::FAILED));
