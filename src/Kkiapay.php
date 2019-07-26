@@ -12,8 +12,6 @@ use function GuzzleHttp\json_encode;
  * THIS FILE CONTAINS ALL KKIAPAY API STATUS
  */
 
-require dirname( __DIR__ ). '/vendor/autoload.php';
-
 class Kkiapay{
 
     // Publishable Api key
