@@ -30,7 +30,7 @@ Using composer:
 
 #### Sandbox
 ```php
-    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox = false);
+    $kkiapay = new \Kkiapay\Kkiapay($public_key, $private_key, $secret, $sandbox = true);
 ```
   
 
