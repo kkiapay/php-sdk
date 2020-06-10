@@ -1,5 +1,7 @@
 <?php namespace Kkiapay;
 
+require dirname( __DIR__ ). '/vendor/autoload.php';
+
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
 use function GuzzleHttp\json_encode;
