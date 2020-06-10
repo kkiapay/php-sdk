@@ -1,5 +1,7 @@
 <?php namespace Kkiapay;
 
+require dirname( __DIR__ ). '/vendor/autoload.php';
+
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
 use function GuzzleHttp\json_encode;
@@ -36,7 +38,7 @@ class Kkiapay{
         $this->public_key = $public_key;
         $this->secret = $secret;
         $this->sandbox = $sandbox;
-        $this->curl = new \GuzzleHttp\Client(['verify' => false]);
+        $this->curl = new \GuzzleHttp\Client();
     }
 
 
