@@ -1,7 +1,7 @@
 {
     "name": "kkiapay/kkiapay-php",
     "description": "Php sdk for kkiapay payment gateway",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "^7.0.1"
