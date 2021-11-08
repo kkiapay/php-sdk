@@ -70,20 +70,19 @@ class Kkiapay
                 ]
             ));
 
-            $response = $response->getBody();
+            $response = $response->getBody()->getContents();
         } catch (RequestException $e) {
 
 
-            $status = [401, 400];
+            $body = ($e->getResponse()->getBody());
 
-            if (in_array($e->getResponse()->getStatusCode(), $status)) {
-                $response = ($e->getResponse()->getBody());
-            }
-            $result = (json_decode((string)$response));
+            $errors = (json_decode((string)$body));
 
-            $result->statusCode = $e->getResponse()->getStatusCode();
+            $errors->statusCode = $e->getResponse()->getStatusCode();
+
+            return $errors;
         }
-        return $result;
+        return json_decode((string)$response);
     }
 
 
@@ -117,9 +116,6 @@ class Kkiapay
     }
 
 
-    public function setHttpClient($client){
-        $this->curl = $client;
-    }
 
 
     public function setupPayout(array $options)

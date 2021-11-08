@@ -12,7 +12,7 @@ $secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
 $kkiapay = new Kkiapay($public_key, $private_key, $secret);
 
-$verify = $kkiapay->verifyTransaction("oldnbsc");
+$verify = $kkiapay->verifyTransaction("xxxxxxx");
 
 //$refund = $kkiapay->refundTransaction("oldnbsc");
 

@@ -4,8 +4,7 @@
     "version": "0.0.4",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle": "^7.0.1",
-        "phpunit/phpunit": "^9.5"
+        "guzzlehttp/guzzle": "^7.0.1"
     },
     "license": "MIT",
     "authors": [{
