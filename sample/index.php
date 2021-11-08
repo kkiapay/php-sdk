@@ -2,6 +2,8 @@
 
 namespace Kkiapay;
 
+require '../vendor/autoload.php';
+
 include_once('../src/Kkiapay.php');
 
 $public_key = "xxxxxxxxxxxxxxxxxxxxxxxxxx";
@@ -10,10 +12,10 @@ $secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
 $kkiapay = new Kkiapay($public_key, $private_key, $secret);
 
-//$verify = $kkiapay->verifyTransaction("oldnbsc");
+$verify = $kkiapay->verifyTransaction("xxxxxxx");
 
 //$refund = $kkiapay->refundTransaction("oldnbsc");
 
-$payout = $kkiapay->setupPayout(array( "algorithm" => "rate", "send_notification" => true, "destination_type" => "MOBILE_MONEY", "rate_frequency" => "1m", "destination" => "22997000000" ));
+// $payout = $kkiapay->setupPayout(array( "algorithm" => "rate", "send_notification" => true, "destination_type" => "MOBILE_MONEY", "rate_frequency" => "1m", "destination" => "22997000000" ));
 
-var_dump($payout);
+var_dump($verify);

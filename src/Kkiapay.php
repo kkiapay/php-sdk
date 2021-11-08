@@ -1,10 +1,14 @@
-<?php namespace Kkiapay;
+<?php
+
+namespace Kkiapay;
 
 
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
 use function GuzzleHttp\json_encode;
+use function PHPSTORM_META\type;
+
 /**
  * Created by PhpStorm.
  * User: shadai.ali
@@ -14,7 +18,8 @@ use function GuzzleHttp\json_encode;
  * THIS FILE CONTAINS ALL KKIAPAY API STATUS
  */
 
-class Kkiapay{
+class Kkiapay
+{
 
     // Publishable Api key
     private $public_key;
@@ -42,97 +47,109 @@ class Kkiapay{
     }
 
 
-    public function hash($str){
-        if($this->getSecret() == null) throw new \Exception("Secret key is not set");
-        return urlencode(  base64_encode( hash_hmac('SHA256', $str, $this->getSecret(),TRUE)));
+    public function hash($str)
+    {
+        if ($this->getSecret() == null) throw new \Exception("Secret key is not set");
+        return urlencode(base64_encode(hash_hmac('SHA256', $str, $this->getSecret(), TRUE)));
     }
 
-    public function verifyTransaction($transactionId){
+    public function verifyTransaction($transactionId)
+    {
         $response = null;
-      try{
-        
-        $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
+        try {
 
-        $response = $this->curl->post($const. '/api/v1/transactions/status', array(
-            "json" => array("transactionId" => $transactionId),
-            'headers' => [
-                'Accept' => 'application/json',
-                'X-API-KEY' => $this->public_key,
-                'X-PRIVATE-KEY' => $this->private_key,
-                'X-SECRET-KEY' => $this->secret
-            ]
-        ));
+            $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
 
-        $response = $response->getBody();
-      }catch (\Exception $e){
+            $response = $this->curl->post($const . '/api/v1/transactions/status', array(
+                "json" => array("transactionId" => $transactionId),
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-API-KEY' => $this->public_key,
+                    'X-PRIVATE-KEY' => $this->private_key,
+                    'X-SECRET-KEY' => $this->secret
+                ]
+            ));
 
-        $response = json_encode(array( "status" => STATUS::TRANSACTION_NOT_FOUND));
-      }
-    return json_decode((string)$response);
+            $response = $response->getBody()->getContents();
+        } catch (RequestException $e) {
+
+
+            $body = ($e->getResponse()->getBody());
+
+            $errors = (json_decode((string)$body));
+
+            $errors->statusCode = $e->getResponse()->getStatusCode();
+
+            return $errors;
+        }
+        return json_decode((string)$response);
     }
 
 
-    public function refundTransaction($transactionId){
+    public function refundTransaction($transactionId)
+    {
         $reponse = null;
-      try{
+        try {
 
-        $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
+            $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
 
-          $response = $this->curl->post($const. '/api/v1/transactions/revert', array(
-            
-              "json" => array("transactionId" => $transactionId),
-              'headers' => [
-                  'Accept'     => 'application/json',
-                  'X-API-KEY'      => $this->public_key
-              ]
-          ));
+            $response = $this->curl->post($const . '/api/v1/transactions/revert', array(
+
+                "json" => array("transactionId" => $transactionId),
+                'headers' => [
+                    'Accept'     => 'application/json',
+                    'X-API-KEY'      => $this->public_key
+                ]
+            ));
 
             $reponse = $response->getBody();
             return json_decode((string)$reponse);
-
-        }catch (RequestException $e){
+        } catch (RequestException $e) {
             if ($e->hasResponse()) {
-                $reponse = "{".$this->get_string_between(Psr7\str($e->getResponse()), "{","}")."}";
+                $reponse = "{" . $this->get_string_between(Psr7\str($e->getResponse()), "{", "}") . "}";
 
                 return json_decode((string)$reponse);
             }
-            $reponse = json_encode(array( "status" => STATUS::FAILED));
+            $reponse = json_encode(array("status" => STATUS::FAILED));
             return json_decode((string)$response);
         }
     }
 
 
-    public function setupPayout(array $options){
+
+
+    public function setupPayout(array $options)
+    {
         $reponse = null;
-      try{
+        try {
 
-          $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
+            $const = $this->sandbox ? Constants::SANDBOX_URL : Constants::BASE_URL;
 
-          $response = $this->curl->post($const. '/merchant/payouts/schedule', array(
-              "json" => $options,
-              'headers' => [
-                  'Accept'     => 'application/json',
-                  'X-API-KEY'      => $this->public_key,
-                  'X-PRIVATE-API-KEY'      => $this->private_key,
-                  'X-SECRET-API-KEY'      => $this->secret,
-              ]
-          ));
+            $response = $this->curl->post($const . '/merchant/payouts/schedule', array(
+                "json" => $options,
+                'headers' => [
+                    'Accept'     => 'application/json',
+                    'X-API-KEY'      => $this->public_key,
+                    'X-PRIVATE-API-KEY'      => $this->private_key,
+                    'X-SECRET-API-KEY'      => $this->secret,
+                ]
+            ));
 
             $reponse = $response->getBody();
             return json_decode((string)$reponse);
-
-        }catch (RequestException $e){
+        } catch (RequestException $e) {
             if ($e->hasResponse()) {
-                $reponse = "{".$this->get_string_between(Psr7\str($e->getResponse()), "{","}")."}";
+                $reponse = "{" . $this->get_string_between(Psr7\str($e->getResponse()), "{", "}") . "}";
                 return json_decode((string)$reponse);
             }
-            $reponse = json_encode(array( "status" => STATUS::FAILED));
+            $reponse = json_encode(array("status" => STATUS::FAILED));
             return json_decode((string)$response);
         }
     }
 
-    
-    function get_string_between($string, $start, $end){
+
+    function get_string_between($string, $start, $end)
+    {
         $string = ' ' . $string;
         $ini = strpos($string, $start);
         if ($ini == 0) return '';
@@ -164,6 +181,4 @@ class Kkiapay{
     {
         return $this->secret;
     }
-
-
 }
