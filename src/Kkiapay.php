@@ -2,8 +2,6 @@
 
 namespace Kkiapay;
 
-
-
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
 use function GuzzleHttp\json_encode;
@@ -20,7 +18,6 @@ use function PHPSTORM_META\type;
 
 class Kkiapay
 {
-
     // Publishable Api key
     private $public_key;
 
@@ -43,7 +40,9 @@ class Kkiapay
         $this->public_key = $public_key;
         $this->secret = $secret;
         $this->sandbox = $sandbox;
-        $this->curl = new \GuzzleHttp\Client();
+        $this->curl = new \GuzzleHttp\Client([
+            'verify' => __DIR__ . '/../data/cacert.pem'
+        ]);
     }
 
 
@@ -72,7 +71,6 @@ class Kkiapay
 
             $response = $response->getBody()->getContents();
         } catch (RequestException $e) {
-
 
             $body = ($e->getResponse()->getBody());
 
