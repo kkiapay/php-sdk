@@ -30,6 +30,8 @@ class Kkiapay
     private $curl;
 
     private $sandbox;
+    
+    private $attempts = 0;
 
     /**
      * Kkiapay constructor.
@@ -71,6 +73,8 @@ class Kkiapay
 
             $response = $response->getBody()->getContents();
         } catch (RequestException $e) {
+            $this->attempts += 1;
+            if($this->attempts > 3) return $e->getResponse()->getStatusCode();
             return $this->verifyTransaction($transactionId);
         }
         return json_decode((string)$response);
