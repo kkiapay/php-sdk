@@ -71,14 +71,7 @@ class Kkiapay
 
             $response = $response->getBody()->getContents();
         } catch (RequestException $e) {
-
-            $body = ($e->getResponse()->getBody());
-
-            $errors = (json_decode((string)$body));
-
-            $errors->statusCode = $e->getResponse()->getStatusCode();
-
-            return $errors;
+            return $this->verifyTransaction($transactionId);
         }
         return json_decode((string)$response);
     }
