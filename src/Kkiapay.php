@@ -5,7 +5,6 @@ namespace Kkiapay;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
 use function GuzzleHttp\json_encode;
-use function PHPSTORM_META\type;
 
 /**
  * Created by PhpStorm.
@@ -30,7 +29,7 @@ class Kkiapay
     private $curl;
 
     private $sandbox;
-    
+
     private $attempts = 0;
 
     /**
@@ -43,7 +42,7 @@ class Kkiapay
         $this->secret = $secret;
         $this->sandbox = $sandbox;
         $this->curl = new \GuzzleHttp\Client([
-            'verify' => __DIR__ . '/../data/cacert.pem'
+            'verify' => __DIR__ . '/../cert/cacert.pem'
         ]);
     }
 
@@ -74,7 +73,7 @@ class Kkiapay
             $response = $response->getBody()->getContents();
         } catch (RequestException $e) {
             $this->attempts += 1;
-            if($this->attempts > 3) return $e->getResponse()->getStatusCode();
+            if ($this->attempts > 3) return $e->getResponse()->getStatusCode();
             return $this->verifyTransaction($transactionId);
         }
         return json_decode((string)$response);
@@ -101,7 +100,7 @@ class Kkiapay
             return json_decode((string)$reponse);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
-                $reponse = "{" . $this->get_string_between(Psr7\str($e->getResponse()), "{", "}") . "}";
+                $reponse = "{" . $this->get_string_between(Psr7\Message::toString($e->getResponse()), "{", "}") . "}";
 
                 return json_decode((string)$reponse);
             }
@@ -134,7 +133,7 @@ class Kkiapay
             return json_decode((string)$reponse);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
-                $reponse = "{" . $this->get_string_between(Psr7\str($e->getResponse()), "{", "}") . "}";
+                $reponse = "{" . $this->get_string_between(Psr7\Message::toString($e->getResponse()), "{", "}") . "}";
                 return json_decode((string)$reponse);
             }
             $reponse = json_encode(array("status" => STATUS::FAILED));
