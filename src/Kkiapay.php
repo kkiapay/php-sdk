@@ -170,7 +170,7 @@ class Kkiapay
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getSecret()
     {
